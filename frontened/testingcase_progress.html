@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Progress Tracker</title>
+    <style>
+      body {
+        font-family: "Roboto", Arial, sans-serif;
+        padding: 20px;
+        background: #f9f9f9;
+        color: #333;
+      }
+      header {
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+      th {
+        background: #f4f4f4;
+      }
+      tr:hover {
+        background: #f9f9f9;
+      }
+      form label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      button {
+        padding: 10px 20px;
+        margin-right: 10px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      button.delete-btn {
+        background: #f44336;
+      }
+      button.delete-btn:hover {
+        background: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Case Progress Tracker</h1>
+    </header>
+    <div class="container">
+      <div class="card">
+        <h2 id="form-title">Add New Progress</h2>
+        <form id="progressForm">
+          <input type="hidden" id="progress_id" />
+          <label>Crime ID:</label>
+          <input type="number" id="crime_id" required />
+          <label>Status Update:</label>
+          <textarea id="status_update" required></textarea>
+          <label>Updated By (User ID):</label>
+          <input type="number" id="updated_by" required />
+          <label>Date Updated:</label>
+          <input type="date" id="date_updated" required />
+          <button type="submit">Save</button>
+          <button type="button" onclick="resetForm()">Clear</button>
+        </form>
+      </div>
+      <div class="card">
+        <table id="progressTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Crime ID</th>
+              <th>Status</th>
+              <th>Updated By</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      const API_URL = "http://localhost:3000/api/case_progress";
+
+      const tableBody = document.querySelector("#progressTable tbody");
+      const form = document.getElementById("progressForm");
+      const progressId = document.getElementById("progress_id");
+
+      async function fetchProgress() {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        tableBody.innerHTML = "";
+        data.forEach((p) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+          <td>${p.progress_id}</td>
+          <td>${p.crime_id}</td>
+          <td>${p.status_update}</td>
+          <td>${p.updated_by}</td>
+          <td>${p.date_updated}</td>
+          <td>
+            <button onclick="editProgress(${p.progress_id})">Edit</button>
+            <button class="delete-btn" onclick="deleteProgress(${p.progress_id})">Delete</button>
+          </td>
+        `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      async function editProgress(id) {
+        const res = await fetch(`${API_URL}/${id}`);
+        const data = await res.json();
+        progressId.value = data.progress_id;
+        document.getElementById("crime_id").value = data.crime_id;
+        document.getElementById("status_update").value = data.status_update;
+        document.getElementById("updated_by").value = data.updated_by;
+        document.getElementById("date_updated").value = data.date_updated;
+        document.getElementById("form-title").innerText = "Edit Progress";
+      }
+
+      async function deleteProgress(id) {
+        if (confirm("Are you sure you want to delete this record?")) {
+          await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+          fetchProgress();
+        }
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          crime_id: document.getElementById("crime_id").value,
+          status_update: document.getElementById("status_update").value,
+          updated_by: document.getElementById("updated_by").value,
+          date_updated: document.getElementById("date_updated").value,
+        };
+
+        if (progressId.value) {
+          // Update
+          await fetch(`${API_URL}/${progressId.value}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+        } else {
+          // Create
+          await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+        }
+
+        resetForm();
+        fetchProgress();
+      });
+
+      function resetForm() {
+        form.reset();
+        progressId.value = "";
+        document.getElementById("form-title").innerText = "Add New Progress";
+      }
+
+      fetchProgress();
+    </script>
+  </body>
+</html>

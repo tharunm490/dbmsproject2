@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Witness Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      input {
+        padding: 10px;
+        margin: 5px;
+        width: 200px;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      th {
+        background: #007bff;
+        color: white;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Witness Management</h1>
+
+    <form id="witnessForm">
+      <input type="hidden" id="witness_id" />
+      <input type="text" id="name" placeholder="Name" required />
+      <input
+        type="text"
+        id="contact_info"
+        placeholder="Contact Info"
+        required
+      />
+      <input type="number" id="crime_id" placeholder="Crime ID" required />
+      <button type="submit">Save</button>
+      <button type="button" onclick="clearForm()">Clear</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Contact Info</th>
+          <th>Crime ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="witnessTable"></tbody>
+    </table>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/witness";
+
+      // Fetch and display all witnesses
+      async function loadWitnesses() {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        const tbody = document.getElementById("witnessTable");
+        tbody.innerHTML = "";
+
+        data.forEach((witness) => {
+          tbody.innerHTML += `
+          <tr>
+            <td>${witness.witness_id}</td>
+            <td>${witness.name}</td>
+            <td>${witness.contact_info}</td>
+            <td>${witness.crime_id}</td>
+            <td>
+              <button onclick='editWitness(${JSON.stringify(
+                witness
+              )})'>Edit</button>
+              <button onclick='deleteWitness(${
+                witness.witness_id
+              })'>Delete</button>
+            </td>
+          </tr>
+        `;
+        });
+      }
+
+      // Add or update witness
+      document
+        .getElementById("witnessForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const witness_id = document.getElementById("witness_id").value;
+          const name = document.getElementById("name").value;
+          const contact_info = document.getElementById("contact_info").value;
+          const crime_id = document.getElementById("crime_id").value;
+
+          const witnessData = { name, contact_info, crime_id };
+
+          if (witness_id) {
+            await fetch(`${apiUrl}/${witness_id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(witnessData),
+            });
+          } else {
+            await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(witnessData),
+            });
+          }
+
+          clearForm();
+          loadWitnesses();
+        });
+
+      // Delete witness
+      async function deleteWitness(id) {
+        if (confirm("Are you sure you want to delete this witness?")) {
+          await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+          loadWitnesses();
+        }
+      }
+
+      // Edit witness
+      function editWitness(witness) {
+        document.getElementById("witness_id").value = witness.witness_id;
+        document.getElementById("name").value = witness.name;
+        document.getElementById("contact_info").value = witness.contact_info;
+        document.getElementById("crime_id").value = witness.crime_id;
+      }
+
+      // Clear form
+      function clearForm() {
+        document.getElementById("witness_id").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("contact_info").value = "";
+        document.getElementById("crime_id").value = "";
+      }
+
+      // Initial load
+      loadWitnesses();
+    </script>
+  </body>
+</html>

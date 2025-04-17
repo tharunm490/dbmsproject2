@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suspects Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h2 {
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      button.edit,
+      button.delete {
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button.edit {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      button.delete {
+        background-color: #f44336;
+        color: white;
+      }
+
+      button.edit:hover {
+        background-color: #45a049;
+      }
+
+      button.delete:hover {
+        background-color: #e53935;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Suspects Management</h2>
+
+      <!-- Form to Add or Update Suspect -->
+      <form id="suspect-form">
+        <input type="hidden" id="suspect-id" />
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="number" id="age" placeholder="Age" required />
+        <input type="number" id="crime_id" placeholder="Crime ID" required />
+        <button type="submit" id="submit-btn">Add Suspect</button>
+      </form>
+
+      <hr />
+
+      <!-- Table to display Suspects -->
+      <table id="suspects-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Crime ID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic rows will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/suspects"; // Backend URL
+
+      // DOM elements
+      const suspectForm = document.getElementById("suspect-form");
+      const nameInput = document.getElementById("name");
+      const ageInput = document.getElementById("age");
+      const crimeIdInput = document.getElementById("crime_id");
+      const submitButton = document.getElementById("submit-btn");
+      const suspectsTable = document
+        .getElementById("suspects-table")
+        .getElementsByTagName("tbody")[0];
+
+      // Fetch and display suspects
+      const fetchSuspects = async () => {
+        try {
+          const res = await fetch(apiUrl);
+          const data = await res.json();
+          renderTable(data);
+        } catch (err) {
+          console.error("Error fetching suspects:", err);
+        }
+      };
+
+      // Render suspects table
+      const renderTable = (suspects) => {
+        suspectsTable.innerHTML = "";
+        suspects.forEach((suspect) => {
+          const row = suspectsTable.insertRow();
+          row.innerHTML = `
+          <td>${suspect.suspect_id}</td>
+          <td>${suspect.name}</td>
+          <td>${suspect.age}</td>
+          <td>${suspect.crime_id}</td>
+          <td>
+            <button class="edit" onclick="editSuspect(${suspect.suspect_id})">Edit</button>
+            <button class="delete" onclick="deleteSuspect(${suspect.suspect_id})">Delete</button>
+          </td>
+        `;
+        });
+      };
+
+      // Add or Update suspect
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const name = nameInput.value;
+        const age = ageInput.value;
+        const crimeId = crimeIdInput.value;
+        const suspectId = document.getElementById("suspect-id").value;
+
+        const suspectData = { name, age, crime_id: crimeId };
+
+        try {
+          if (suspectId) {
+            // Update existing suspect
+            await fetch(`${apiUrl}/${suspectId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(suspectData),
+            });
+          } else {
+            // Add new suspect
+            await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(suspectData),
+            });
+          }
+
+          // Clear form and refresh table
+          suspectForm.reset();
+          document.getElementById("suspect-id").value = "";
+          fetchSuspects();
+        } catch (err) {
+          console.error("Error submitting suspect:", err);
+        }
+      };
+
+      // Edit suspect
+      const editSuspect = (suspectId) => {
+        const suspect = Array.from(suspectsTable.rows).find(
+          (row) => row.cells[0].innerText == suspectId
+        );
+        if (suspect) {
+          const name = suspect.cells[1].innerText;
+          const age = suspect.cells[2].innerText;
+          const crimeId = suspect.cells[3].innerText;
+
+          nameInput.value = name;
+          ageInput.value = age;
+          crimeIdInput.value = crimeId;
+          document.getElementById("suspect-id").value = suspectId;
+          submitButton.innerText = "Update Suspect";
+        }
+      };
+
+      // Delete suspect
+      const deleteSuspect = async (suspectId) => {
+        try {
+          await fetch(`${apiUrl}/${suspectId}`, {
+            method: "DELETE",
+          });
+          fetchSuspects();
+        } catch (err) {
+          console.error("Error deleting suspect:", err);
+        }
+      };
+
+      // Initial fetch of suspects
+      fetchSuspects();
+
+      // Add event listener for form submission
+      suspectForm.addEventListener("submit", handleSubmit);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrests Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f4f4f9;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      form {
+        margin-bottom: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      input {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px 15px;
+        margin-right: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button.delete-btn {
+        background-color: #dc3545;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Arrests Management</h1>
+    </header>
+
+    <form id="arrestForm">
+      <input type="hidden" id="arrest_id" />
+      <label for="crime_id">Crime ID:</label>
+      <input
+        type="number"
+        id="crime_id"
+        placeholder="Enter Crime ID"
+        required
+      />
+      <label for="suspect_id">Suspect ID:</label>
+      <input
+        type="number"
+        id="suspect_id"
+        placeholder="Enter Suspect ID"
+        required
+      />
+      <label for="arresting_officer">Arresting Officer (User ID):</label>
+      <input
+        type="number"
+        id="arresting_officer"
+        placeholder="Enter Officer ID"
+        required
+      />
+      <label for="arrest_date">Arrest Date:</label>
+      <input type="date" id="arrest_date" required />
+      <button type="submit">Save</button>
+      <button type="button" onclick="resetForm()">Clear</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Crime ID</th>
+          <th>Suspect ID</th>
+          <th>Arresting Officer</th>
+          <th>Arrest Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="arrestTable"></tbody>
+    </table>
+
+    <script>
+      const API_URL = "http://localhost:3000/api/arrests";
+
+      const tableBody = document.getElementById("arrestTable");
+      const form = document.getElementById("arrestForm");
+      const arrestId = document.getElementById("arrest_id");
+
+      async function fetchArrests() {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        tableBody.innerHTML = "";
+        data.forEach((arrest) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${arrest.arrest_id}</td>
+            <td>${arrest.crime_id}</td>
+            <td>${arrest.suspect_id}</td>
+            <td>${arrest.arresting_officer}</td>
+            <td>${arrest.arrest_date}</td>
+            <td>
+              <button onclick="editArrest(${arrest.arrest_id})">Edit</button>
+              <button class="delete-btn" onclick="deleteArrest(${arrest.arrest_id})">Delete</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      async function editArrest(id) {
+        const res = await fetch(`${API_URL}/${id}`);
+        const arrest = await res.json();
+        arrestId.value = arrest.arrest_id;
+        document.getElementById("crime_id").value = arrest.crime_id;
+        document.getElementById("suspect_id").value = arrest.suspect_id;
+        document.getElementById("arresting_officer").value =
+          arrest.arresting_officer;
+        document.getElementById("arrest_date").value = arrest.arrest_date;
+      }
+
+      async function deleteArrest(id) {
+        if (confirm("Are you sure you want to delete this arrest?")) {
+          await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+          fetchArrests();
+        }
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          crime_id: document.getElementById("crime_id").value,
+          suspect_id: document.getElementById("suspect_id").value,
+          arresting_officer: document.getElementById("arresting_officer").value,
+          arrest_date: document.getElementById("arrest_date").value,
+        };
+
+        if (arrestId.value) {
+          // Update
+          await fetch(`${API_URL}/${arrestId.value}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+        } else {
+          // Create
+          await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+        }
+
+        resetForm();
+        fetchArrests();
+      });
+
+      function resetForm() {
+        form.reset();
+        arrestId.value = "";
+      }
+
+      fetchArrests();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Evidence Management</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f0f2f5;
+      }
+      h1 {
+        text-align: center;
+      }
+      form {
+        margin-bottom: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px #ccc;
+      }
+      input {
+        margin: 5px;
+        padding: 10px;
+        width: 200px;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 0 10px #ccc;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ccc;
+      }
+      th {
+        background-color: #333;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Evidence Records</h1>
+
+    <form id="evidenceForm">
+      <input type="hidden" id="evidence_id" />
+      <input type="text" id="description" placeholder="Description" required />
+      <input
+        type="number"
+        id="collected_by"
+        placeholder="Collected By (User ID)"
+        required
+      />
+      <input type="number" id="crime_id" placeholder="Crime ID" required />
+      <button type="submit">Save</button>
+      <button type="button" onclick="clearForm()">Clear</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Collected By</th>
+          <th>Crime ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="evidenceTable"></tbody>
+    </table>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/evidence";
+
+      async function loadEvidence() {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        const tbody = document.getElementById("evidenceTable");
+        tbody.innerHTML = "";
+        data.forEach((item) => {
+          tbody.innerHTML += `
+    <tr>
+      <td>${item.evidence_id}</td>
+      <td>${item.description}</td>
+      <td>${item.collected_by}</td>
+      <td>${item.crime_id}</td>
+      <td>
+        <button onclick='editEvidence(${JSON.stringify(item)})'>Edit</button>
+        <button onclick='deleteEvidence(${item.evidence_id})'>Delete</button>
+      </td>
+    </tr>`;
+        });
+      }
+
+      document
+        .getElementById("evidenceForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const evidence_id = document.getElementById("evidence_id").value;
+          const description = document.getElementById("description").value;
+          const collected_by = document.getElementById("collected_by").value;
+          const crime_id = document.getElementById("crime_id").value;
+          const data = { description, collected_by, crime_id };
+
+          console.log("Submitting data:", data); // Debugging
+
+          let response;
+          if (evidence_id) {
+            // Update
+            response = await fetch(`${apiUrl}/${evidence_id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            });
+            console.log("Update response:", await response.json()); // Debugging
+          } else {
+            // Create
+            response = await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            });
+            console.log("Create response:", await response.json()); // Debugging
+          }
+
+          if (!response.ok) {
+            alert(
+              "Error: Unable to save evidence. Check the console for details."
+            );
+          }
+
+          clearForm();
+          loadEvidence();
+        });
+
+      function editEvidence(item) {
+        document.getElementById("evidence_id").value = item.evidence_id;
+        document.getElementById("description").value = item.description;
+        document.getElementById("collected_by").value = item.collected_by;
+        document.getElementById("crime_id").value = item.crime_id;
+      }
+
+      async function deleteEvidence(id) {
+        if (confirm("Are you sure you want to delete this evidence?")) {
+          await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+          loadEvidence();
+        }
+      }
+
+      function clearForm() {
+        document.getElementById("evidence_id").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("crime_id").value = "";
+      }
+
+      loadEvidence();
+    </script>
+  </body>
+</html>
