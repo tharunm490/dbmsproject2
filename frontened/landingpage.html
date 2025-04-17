@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Landing Page</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        color: white;
+      }
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .navbar {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+      }
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+      }
+      .navbar a:hover {
+        color: #007bff;
+      }
+      .header {
+        position: relative;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 20px 40px;
+        border-radius: 10px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 3rem;
+      }
+      .header p {
+        margin: 10px 0 0;
+        font-size: 1.2rem;
+      }
+      .header button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .header button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <video
+      src="Blue & White Futuristic Gaming Channel Youtube Intro .mp4"
+      autoplay
+      muted
+      loop
+    ></video>
+    <div class="navbar">
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </body>
+</html>
