@@ -59,41 +59,47 @@
         background-color: #007bff;
         color: white;
       }
+      #f {
+        margin-left: 450px;
+        height: 450px;
+        width: 500px;
+      }
     </style>
   </head>
   <body>
     <header>
       <h1>Arrests Management</h1>
     </header>
-
-    <form id="arrestForm">
-      <input type="hidden" id="arrest_id" />
-      <label for="crime_id">Crime ID:</label>
-      <input
-        type="number"
-        id="crime_id"
-        placeholder="Enter Crime ID"
-        required
-      />
-      <label for="suspect_id">Suspect ID:</label>
-      <input
-        type="number"
-        id="suspect_id"
-        placeholder="Enter Suspect ID"
-        required
-      />
-      <label for="arresting_officer">Arresting Officer (User ID):</label>
-      <input
-        type="number"
-        id="arresting_officer"
-        placeholder="Enter Officer ID"
-        required
-      />
-      <label for="arrest_date">Arrest Date:</label>
-      <input type="date" id="arrest_date" required />
-      <button type="submit">Save</button>
-      <button type="button" onclick="resetForm()">Clear</button>
-    </form>
+    <div id="f">
+      <form id="arrestForm">
+        <input type="hidden" id="arrest_id" />
+        <label for="crime_id">Crime ID:</label>
+        <input
+          type="number"
+          id="crime_id"
+          placeholder="Enter Crime ID"
+          required
+        />
+        <label for="suspect_id">Suspect ID:</label>
+        <input
+          type="number"
+          id="suspect_id"
+          placeholder="Enter Suspect ID"
+          required
+        />
+        <label for="arresting_officer">Arresting Officer (User ID):</label>
+        <input
+          type="number"
+          id="arresting_officer"
+          placeholder="Enter Officer ID"
+          required
+        />
+        <label for="arrest_date">Arrest Date:</label>
+        <input type="date" id="arrest_date" required />
+        <button type="submit">Save</button>
+        <button type="button" onclick="resetForm()">Clear</button>
+      </form>
+    </div>
 
     <table>
       <thead>
