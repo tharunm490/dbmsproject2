@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crime Record Managing System</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #d5c7a3, #aa9e9e);
+      }
+      .header {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header .logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .header .nav {
+        display: flex;
+        align-items: center;
+      }
+      .header .nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      .header .nav a:hover {
+        background-color: #575757;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #444;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s;
+      }
+      .dropdown-content a:hover {
+        background-color: #575757;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .dropdown:hover .dropbtn {
+        background-color: #575757;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">Crime Record Managing System</div>
+      <div class="nav">
+        <a href="#">Home</a>
+        <div class="dropdown">
+          <a href="#" class="dropbtn">Menu</a>
+          <div class="dropdown-content">
+            <a href="testing.html">Crimes</a>
+            <a href="testingarrests.html">Arrests</a>
+            <a href="testingcase_progress.html">Case progress</a>
+            <a href="testingcourt_cases.html">Court cases</a>
+            <a href="testingevedince.html">Evidence</a>
+            <a href="testingusers.html">Users</a>
+            <a href="testvictums.html">Victims</a>
+            <a href="#" onclick="checkPassword()">Witness</a>
+            <a href="tpolicestation.html">Policestation</a>
+            <a href="tsuspects.html">Suspects</a>
+          </div>
+        </div>
+        <a href="#">Login</a>
+        <a href="signup.html">Signup</a>
+      </div>
+    </div>
+    <script>
+      function checkPassword() {
+        const password = prompt(
+          "Enter the password to access the Witness page:"
+        );
+        if (password === "1234") {
+          alert("You can go");
+          window.location.href = "testwitness.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+    </script>
+  </body>
+</html>
