@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Progress Viewer</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f4f8;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2e7d32;
+        margin-bottom: 30px;
+      }
+
+      .flashcard-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .flashcard {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .flashcard:hover {
+        transform: scale(1.02);
+      }
+
+      .flashcard h3 {
+        margin-top: 0;
+        color: #388e3c;
+      }
+
+      .flashcard p {
+        margin: 8px 0;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Case Progress Updates</h1>
+    <div class="flashcard-container" id="progressCards"></div>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/case_progress";
+
+      const container = document.getElementById("progressCards");
+
+      const loadCaseProgress = async () => {
+        try {
+          const res = await fetch(apiUrl);
+          const data = await res.json();
+          container.innerHTML = "";
+
+          data.forEach((progress) => {
+            const card = document.createElement("div");
+            card.className = "flashcard";
+            card.innerHTML = `
+              <h3>Progress ID: ${progress.progress_id}</h3>
+              <p><strong>Crime ID:</strong> ${progress.crime_id}</p>
+              <p><strong>Status:</strong> ${progress.status_update}</p>
+              <p><strong>Updated By:</strong> ${progress.updated_by}</p>
+              <p><strong>Date Updated:</strong> ${progress.date_updated}</p>
+            `;
+            container.appendChild(card);
+          });
+        } catch (err) {
+          console.error("Failed to load case progress:", err);
+          container.innerHTML = "<p>Error loading data.</p>";
+        }
+      };
+
+      loadCaseProgress();
+    </script>
+  </body>
+</html>

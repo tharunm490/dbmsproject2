@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Court Case Viewer</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f2f6fa;
+      }
+
+      h1 {
+        text-align: center;
+        color: #0d47a1;
+        margin-bottom: 30px;
+      }
+
+      .flashcard-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .flashcard {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .flashcard:hover {
+        transform: scale(1.02);
+      }
+
+      .flashcard h3 {
+        margin-top: 0;
+        color: #1565c0;
+      }
+
+      .flashcard p {
+        margin: 8px 0;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Court Cases</h1>
+    <div class="flashcard-container" id="courtCards"></div>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/court_cases";
+      const container = document.getElementById("courtCards");
+
+      async function loadCourtCases() {
+        try {
+          const res = await fetch(apiUrl);
+          const data = await res.json();
+          container.innerHTML = "";
+
+          data.forEach((courtCase) => {
+            const card = document.createElement("div");
+            card.className = "flashcard";
+            card.innerHTML = `
+            <h3>Case ID: ${courtCase.case_id}</h3>
+            <p><strong>Crime ID:</strong> ${courtCase.crime_id}</p>
+            <p><strong>Case Status:</strong> ${courtCase.case_status}</p>
+            <p><strong>Court Decision:</strong> ${courtCase.court_decision}</p>
+          `;
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Error loading court cases:", error);
+          container.innerHTML = "<p>Failed to load court cases.</p>";
+        }
+      }
+
+      loadCourtCases();
+    </script>
+  </body>
+</html>

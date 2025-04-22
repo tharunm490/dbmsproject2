@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Victims Flash Cards</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #e9ecef;
+        padding: 20px;
+        color: #333;
+      }
+
+      h1 {
+        text-align: center;
+        color: green;
+        margin-bottom: 30px;
+      }
+
+      .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 280px;
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card h3 {
+        color: green;
+        margin: 0 0 10px 0;
+        font-size: 1.4rem;
+      }
+
+      .card p {
+        margin: 6px 0;
+        line-height: 1.4;
+      }
+
+      .label {
+        font-weight: bold;
+        color: #555;
+      }
+
+      @media (max-width: 768px) {
+        .card {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Victims Flash Cards</h1>
+    <div class="cards-container" id="victimsCards"></div>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/victims";
+
+      async function fetchVictims() {
+        try {
+          const res = await fetch(apiUrl);
+          const data = await res.json();
+          const container = document.getElementById("victimsCards");
+          container.innerHTML = "";
+
+          data.forEach((victim) => {
+            container.innerHTML += `
+            <div class="card">
+              <h3>${victim.name}</h3>
+              <p><span class="label">Contact Info:</span> ${victim.contact_info}</p>
+              <p><span class="label">Crime ID:</span> ${victim.crime_id}</p>
+              <p><span class="label">Victim ID:</span> ${victim.victim_id}</p>
+            </div>
+          `;
+          });
+        } catch (error) {
+          console.error("Error fetching victims:", error);
+          document.getElementById("victimsCards").innerHTML =
+            "<p style='color: red;'>Failed to load victim data.</p>";
+        }
+      }
+
+      fetchVictims();
+    </script>
+  </body>
+</html>

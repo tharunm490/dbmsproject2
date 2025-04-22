@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Police Stations</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f3f7fa;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: #fff;
+        border-left: 6px solid #007bff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+      }
+
+      .card p {
+        margin: 10px 0;
+        color: #333;
+      }
+
+      .card p strong {
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Police Stations Directory</h1>
+
+    <div class="container" id="stationContainer"></div>
+
+    <script>
+      const API_URL = "http://localhost:3000/api/police-stations";
+      const container = document.getElementById("stationContainer");
+
+      async function fetchStations() {
+        try {
+          const response = await fetch(API_URL);
+          const stations = await response.json();
+
+          container.innerHTML = "";
+          stations.forEach((station) => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+            <p><strong>ID:</strong> ${station.station_id}</p>
+            <p><strong>Name:</strong> ${station.name}</p>
+            <p><strong>Location:</strong> ${station.location}</p>
+            <p><strong>Contact Number:</strong> ${station.contact_number}</p>
+          `;
+            container.appendChild(card);
+          });
+        } catch (error) {
+          container.innerHTML = "<p>Error loading stations.</p>";
+          console.error("Failed to fetch stations:", error);
+        }
+      }
+
+      fetchStations();
+    </script>
+  </body>
+</html>
