@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Victim Flashcards</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f2f5;
+        padding: 20px;
+        text-align: center;
+      }
+
+      h1 {
+        color: green;
+        margin-bottom: 30px;
+      }
+
+      .flashcard-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .flashcard {
+        width: 250px;
+        height: 150px;
+        perspective: 1000px;
+      }
+
+      .card-inner {
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .flashcard:hover .card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .card-front,
+      .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .card-back {
+        background-color: #e9f7ef;
+        transform: rotateY(180deg);
+      }
+
+      .card-text {
+        font-size: 16px;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Victim Flashcards</h1>
+    <div id="flashcardContainer" class="flashcard-container"></div>
+
+    <script>
+      const apiUrl = "http://localhost:3000/api/victims";
+
+      async function loadFlashcards() {
+        try {
+          const res = await fetch(apiUrl);
+          const victims = await res.json();
+          const container = document.getElementById("flashcardContainer");
+
+          if (victims.length === 0) {
+            container.innerHTML = "<p>No victim data available.</p>";
+            return;
+          }
+
+          victims.forEach((victim) => {
+            const card = document.createElement("div");
+            card.className = "flashcard";
+            card.innerHTML = `
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="card-text"><strong>ID:</strong> ${victim.victim_id}</div>
+                <div class="card-text"><strong>Name:</strong> ${victim.name}</div>
+              </div>
+              <div class="card-back">
+                <div class="card-text"><strong>Contact:</strong> ${victim.contact_info}</div>
+                <div class="card-text"><strong>Crime ID:</strong> ${victim.crime_id}</div>
+              </div>
+            </div>
+          `;
+            container.appendChild(card);
+          });
+        } catch (err) {
+          console.error("Error fetching data:", err);
+          document.getElementById("flashcardContainer").innerHTML =
+            "<p>Failed to load data.</p>";
+        }
+      }
+
+      loadFlashcards();
+    </script>
+  </body>
+</html>

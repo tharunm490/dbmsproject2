@@ -116,15 +116,36 @@
           alert("Passwords do not match.");
           return false;
         }
-
-        return true;
+        localStorage.setItem("username", username);
+        window.location.href = "index2.html";
+        return false;
       }
 
      
-  function handleCredentialResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
-    window.location.href = "index.html"; 
-  }
+      function handleCredentialResponse(response) {
+  console.log("Encoded JWT ID token: " + response.credential);
+
+  // Fake a username for now — you can parse the JWT for real info
+  const decoded = parseJwt(response.credential);
+  const username = decoded.name || "GoogleUser";
+  localStorage.setItem("username", username);
+
+  window.location.href = "index2.html";
+}
+
+// Helper to decode the JWT
+function parseJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(c => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
+      .join('')
+  );
+  return JSON.parse(jsonPayload);
+}
+
 
     </script>
   </body>
