@@ -102,7 +102,7 @@
       .name {
         position: absolute;
         z-index: 2;
-        left: 130px;
+        left: 100px;
         top: 50px;
         color: white;
         font-weight: bolder;
@@ -196,6 +196,67 @@
         width: 250px;
         border: 5px soild #441752;
       }
+
+      h1 {
+        text-align: center;
+        color: #441752;
+        margin-bottom: 40px;
+      }
+
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        height: 200px;
+        width: 250px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        text-align: left;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        border: 4px soild #441752;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .card h3 {
+        margin-top: 0;
+        color: #441752;
+        font-size: 20px;
+      }
+
+      .card p {
+        margin: 10px 0 0;
+        color: #441752;
+        font-size: 14px;
+      }
+
+      .card::after {
+        content: "→";
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 18px;
+        color: #441752;
+        transition: transform 0.3s;
+      }
+
+      .card:hover::after {
+        transform: translateX(5px);
+        color: #441752;
+      }
     </style>
   </head>
   <body>
@@ -208,16 +269,16 @@
           <div class="dropdown">
             <a href="#" class="dropbtn">Menu</a>
             <div class="dropdown-content">
-              <a href="testing.html">Crimes</a>
-              <a href="testingarrests.html">Arrests</a>
-              <a href="testingcase_progress.html">Case progress</a>
-              <a href="testingcourt_cases.html">Court cases</a>
-              <a href="testingevedince.html">Evidence</a>
-              <a href="testingusers.html">Users</a>
-              <a href="testvictums.html">Victims</a>
-              <a href="#" onclick="checkPassword()">Witness</a>
-              <a href="tpolicestation.html">Policestation</a>
-              <a href="tsuspects.html">Suspects</a>
+              <a href="#" onclick="checkPassword1()">Crimes</a>
+              <a href="#" onclick="checkPassword2()">Arrests</a>
+              <a href="#" onclick="checkPassword3()">Case progress</a>
+              <a href="#" onclick="checkPassword4()">Court cases</a>
+              <a href="#" onclick="checkPassword5()">Evidence</a>
+              <a href="#" onclick="checkPassword6()">Users</a>
+              <a href="#" onclick="checkPassword7()">Victims</a>
+              <a href="#" onclick="checkPassword8()">Witness</a>
+              <a href="#" onclick="checkPassword9()">Policestation</a>
+              <a href="#" onclick="checkPassword10()">Suspects</a>
             </div>
           </div>
           <a href="signup.html">Signup</a>
@@ -225,30 +286,74 @@
             id="welcome-user"
             style="margin-right: 20px; color: white"
           ></span>
+          <a href="#" id="logout-btn" style="display: none">Logout</a>
         </div>
       </div>
       <img class="ib" src="Designer (2).png" />
       <div class="name">
-        <h1>
+        <h1 style="color: white">
           Crime Record <br />
           Managing System
         </h1>
-        <button class="nbtn"><a href="testing.html">Crime</a></button>
+        <button class="nbtn">
+          <a href="#" onclick="checkPassword1()">Crime</a>
+        </button>
         <button class="nbtn b2"><a href="signup.html">Sign Up</a></button>
       </div>
     </div>
     <img class="bimg" src="wave1.png" alt="Background Image" />
     <br />
-    <!-- <div class="dashimg">
-      <div class="d1">
-        <button>
-          <a href="dasharrest.html">
-            <img src="images\A12345dobeStock_24594005_Preview.png" />
-          </a>
-        </button>
+    <h1>Explore Flashcards</h1>
+
+    <div class="card-container">
+      <div class="card" onclick="openCard('dashusers.html')">
+        <h3>Users Flashcard</h3>
+        <p>View and manage user profiles in a clean card layout.</p>
       </div>
-    </div> -->
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+      <div class="card" onclick="openCard('dashevidence.html')">
+        <h3>Evidence Flashcard</h3>
+        <p>Browse evidence details with a card-based visual design.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashpolicestation.html')">
+        <h3>Police Stations</h3>
+        <p>See all police station data, contacts, and locations.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashcase_progresss.html')">
+        <h3>Case Records</h3>
+        <p>Explore detailed case cards by status and assignments.</p>
+      </div>
+      <div class="card" onclick="openCard('dashcourtcases.html')">
+        <h3>Court Cases</h3>
+        <p>Explore detailed records of ongoing and past court cases.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashsuspects.html')">
+        <h3>Suspects</h3>
+        <p>
+          Review all registered suspects with their profiles and case links.
+        </p>
+      </div>
+
+      <div class="card" onclick="openCard('dasharrest.html')">
+        <h3>Arrests</h3>
+        <p>Browse through arrest records and related information.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashboard.html')">
+        <h3>Crimes</h3>
+        <p>Overview of all reported crimes and their investigation status.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashboardforvictums.html')">
+        <h3>Victims</h3>
+        <p>Access victim profiles and their connection to reported crimes.</p>
+      </div>
+    </div>
+
+    <br /><br />
     <div class="fter">
       <img class="b2img" src="wave2.png" alt="Background Image" />
       <footer class="footer">
@@ -327,24 +432,146 @@
       </footer>
     </div>
     <script>
-      function checkPassword() {
+      function openCard(link) {
+        window.location.href = link;
+      }
+      function checkPassword8() {
         const password = prompt(
           "Enter the password to access the Witness page:"
         );
-        if (password === "1234") {
+        if (password === "1008") {
           alert("You can go");
           window.location.href = "testwitness.html";
         } else {
           alert("Incorrect password. Access denied.");
         }
       }
+      function checkPassword1() {
+        const password = prompt("Enter the password to access the Crime page:");
+        if (password === "1001") {
+          alert("You can go");
+          window.location.href = "testing.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword2() {
+        const password = prompt(
+          "Enter the password to access the Arrests page:"
+        );
+        if (password === "1002") {
+          alert("You can go");
+          window.location.href = "testingarrests.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword3() {
+        const password = prompt(
+          "Enter the password to access the Case Progress page:"
+        );
+        if (password === "1003") {
+          alert("You can go");
+          window.location.href = "testingcase_progress.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword4() {
+        const password = prompt(
+          "Enter the password to access the Court Cases page:"
+        );
+        if (password === "1004") {
+          alert("You can go");
+          window.location.href = "testingcourt_cases.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword5() {
+        const password = prompt(
+          "Enter the password to access the Evidence page:"
+        );
+        if (password === "1005") {
+          alert("You can go");
+          window.location.href = "testingevedince.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword6() {
+        const password = prompt("Enter the password to access the Users page:");
+        if (password === "1006") {
+          alert("You can go");
+          window.location.href = "testingusers.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword7() {
+        const password = prompt(
+          "Enter the password to access the Victums page:"
+        );
+        if (password === "1007") {
+          alert("You can go");
+          window.location.href = "testvictums.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword9() {
+        const password = prompt(
+          "Enter the password to access the Police Station page:"
+        );
+        if (password === "1009") {
+          alert("You can go");
+          window.location.href = "tpolicestation.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+      function checkPassword10() {
+        const password = prompt(
+          "Enter the password to access the Suspects page:"
+        );
+        if (password === "1010") {
+          alert("You can go");
+          window.location.href = "tsuspects.html";
+        } else {
+          alert("Incorrect password. Access denied.");
+        }
+      }
+
       window.onload = function () {
         const username = localStorage.getItem("username");
+
         if (username) {
           document.getElementById(
             "welcome-user"
           ).innerText = `Welcome ${username.toUpperCase()}`;
+          document.getElementById("logout-btn").style.display = "inline-block";
         }
+
+        document
+          .getElementById("logout-btn")
+          .addEventListener("click", function () {
+            // Clear all relevant localStorage items
+            localStorage.removeItem("username");
+            localStorage.removeItem("email");
+            localStorage.removeItem("token"); // if you use any auth tokens
+
+            // Optional: If using Google Sign-In, sign out of Google too
+            if (typeof gapi !== "undefined" && gapi.auth2) {
+              const auth2 = gapi.auth2.getAuthInstance();
+              if (auth2) {
+                auth2.signOut().then(function () {
+                  console.log("Google user signed out.");
+                });
+              }
+            }
+
+            window.location.reload(); // refresh to reflect logout
+          });
       };
     </script>
   </body>
