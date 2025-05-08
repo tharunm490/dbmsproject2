@@ -11,6 +11,8 @@ const evidenceRoutes = require('./routers/evidence');
 const case_progressRoutes = require('./routers/case_progress');
 const arrestsRoutes = require('./routers/arrests');
 const courtCasesRoutes = require('./routers/court_cases');
+const crimeStatsRoutes = require('./routers/crimestatus'); // Import the crime stats route
+const courtCaseStatsRoutes = require('./routers/courtstatus');
 const app = express();
 
 // Middleware
@@ -29,6 +31,8 @@ app.use('/api/evidence', evidenceRoutes);
 app.use('/api/case_progress', case_progressRoutes);
 app.use('/api/arrests', arrestsRoutes);
 app.use('/api/court_cases', courtCasesRoutes);
+app.use('/api/crime-stats', crimeStatsRoutes); // Use the crime stats route
+app.use('/api/court-case-stats', courtCaseStatsRoutes);
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Crime Record Managing System</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
@@ -257,6 +258,44 @@
         transform: translateX(5px);
         color: #441752;
       }
+      .gbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .graph {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 40px auto;
+        height: 400px;
+      }
+      .graph h2 {
+        text-align: center;
+        padding: 20px;
+        margin-top: 0;
+        background-color: #441752;
+        color: white;
+      }
+
+      .chart-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+      }
+
+      canvas {
+        display: block;
+        max-width: 470px;
+        height: 370px;
+      }
     </style>
   </head>
   <body>
@@ -350,6 +389,17 @@
       <div class="card" onclick="openCard('dashboardforvictums.html')">
         <h3>Victims</h3>
         <p>Access victim profiles and their connection to reported crimes.</p>
+      </div>
+    </div>
+    <br />
+    <div class="gbox">
+      <div class="graph">
+        <h2>Crimes by Type</h2>
+        <canvas id="crimeChart" width="600" height="400"></canvas>
+      </div>
+      <div class="graph">
+        <h2>Court Cases</h2>
+        <canvas id="courtCaseChart" width="600" height="400"></canvas>
       </div>
     </div>
 
@@ -573,6 +623,96 @@
             window.location.reload(); // refresh to reflect logout
           });
       };
+      async function fetchCrimeData() {
+        const response = await fetch("http://localhost:3000/api/crime-stats");
+        const data = await response.json();
+
+        const labels = data.map((item) => item.major_crime);
+        const counts = data.map((item) => item.count);
+
+        const ctx = document.getElementById("crimeChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Number of Crimes",
+                data: counts,
+                backgroundColor: "#441752",
+                borderColor: "#441752",
+                borderWidth: 0.5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+      async function fetchCourtCaseData() {
+        const res = await fetch("http://localhost:3000/api/court-case-stats");
+        const data = await res.json();
+
+        // Group data by case_status
+        const grouped = {};
+        data.forEach((item) => {
+          if (!grouped[item.case_status]) grouped[item.case_status] = {};
+          grouped[item.case_status][item.court_decision] = item.count;
+        });
+
+        const caseStatuses = Object.keys(grouped);
+        const allDecisions = [
+          ...new Set(data.map((item) => item.court_decision)),
+        ];
+
+        const datasets = allDecisions.map((decision, index) => ({
+          label: decision,
+          data: caseStatuses.map((status) => grouped[status][decision] || 0),
+          backgroundColor:
+            index % 3 === 0
+              ? "#441752"
+              : index % 3 === 1
+              ? "#8174a0"
+              : "#6a4b8a", // Alternating three colors
+          borderColor: "#441752",
+        }));
+
+        const ctx = document.getElementById("courtCaseChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: caseStatuses,
+            datasets: datasets,
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              title: {
+                display: true,
+                text: "Court Case Status vs Court Decision",
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+
+      // Call the function to fetch crime data
+      fetchCrimeData();
+      fetchCourtCaseData();
     </script>
   </body>
 </html>
