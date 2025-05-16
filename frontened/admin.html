@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Times New Roman", Times, serif;
+        background: #f5f5f5;
+      }
+      .b {
+        background-color: #441752;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin: 40px auto;
+        max-width: 900px;
+      }
+      .container > div {
+        background: #441752;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(68, 23, 82, 0.2);
+        width: 250px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        animation: fadeInUp 0.7s ease;
+      }
+      .container > div:hover {
+        transform: translateY(-10px) scale(1.05) rotate(-2deg);
+        box-shadow: 0 8px 32px rgba(68, 23, 82, 0.35);
+      }
+      .container > div a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.2em;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: color 0.2s;
+        z-index: 1;
+      }
+      .container > div:hover a {
+        color: #ffd700;
+      }
+      /* Animation for boxes */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="b">
+      <h1>Welcome to the Admin Page</h1>
+    </div>
+    <div class="container">
+      <div class="b1">
+        <a href="testing.html">Crime Records</a>
+      </div>
+      <div class="b2">
+        <a href="testingarrests.html">Arrest Records</a>
+      </div>
+      <div class="b3">
+        <a href="testingcase_progress.html">Case Progress</a>
+      </div>
+      <div class="b4">
+        <a href="testingcourt_cases.html">Court Cases</a>
+      </div>
+      <div class="b5">
+        <a href="testingevidence.html">Evidence Records</a>
+      </div>
+      <div class="b6">
+        <a href="testingusers.html">User Records</a>
+      </div>
+      <div class="b7">
+        <a href="testvictims.html">Victim Records</a>
+      </div>
+      <div class="b8">
+        <a href="testwitness.html">Witness Records</a>
+      </div>
+      <div class="b9">
+        <a href="tpolicestation.html">Police Station Records</a>
+      </div>
+      <div class="b10">
+        <a href="tsuspects.html">Suspect Records</a>
+      </div>
+    </div>
+  </body>
+</html>

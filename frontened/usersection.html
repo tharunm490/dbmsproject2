@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <title>User Section</title>
+    <style>
+      .b {
+        background-color: #441752;
+        color: white;
+        padding: 3px;
+        text-align: center;
+        height: 100px;
+      }
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        height: 200px;
+        width: 250px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        text-align: left;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        border: 4px solid #441752;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .card h3 {
+        margin-top: 0;
+        color: #441752;
+        font-size: 20px;
+      }
+
+      .card p {
+        margin: 10px 0 0;
+        color: #441752;
+        font-size: 14px;
+      }
+
+      .card::after {
+        content: "→";
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 18px;
+        color: #441752;
+        transition: transform 0.3s;
+      }
+
+      .card:hover::after {
+        transform: translateX(5px);
+        color: #441752;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="b">
+      <h1>Welcome to the User Section</h1>
+    </div>
+     <br><br>
+    <div class="card-container">
+      <div class="card" onclick="openCard('dashusers.html')">
+        <h3>Users Flashcard</h3>
+        <p>View and manage user profiles in a clean card layout.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashevidence.html')">
+        <h3>Evidence Flashcard</h3>
+        <p>Browse evidence details with a card-based visual design.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashpolicestation.html')">
+        <h3>Police Stations</h3>
+        <p>See all police station data, contacts, and locations.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashcase_progresss.html')">
+        <h3>Case Records</h3>
+        <p>Explore detailed case cards by status and assignments.</p>
+      </div>
+      <div class="card" onclick="openCard('dashcourtcases.html')">
+        <h3>Court Cases</h3>
+        <p>Explore detailed records of ongoing and past court cases.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashsuspects.html')">
+        <h3>Suspects</h3>
+        <p>
+          Review all registered suspects with their profiles and case links.
+        </p>
+      </div>
+
+      <div class="card" onclick="openCard('dasharrest.html')">
+        <h3>Arrests</h3>
+        <p>Browse through arrest records and related information.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashboard.html')">
+        <h3>Crimes</h3>
+        <p>Overview of all reported crimes and their investigation status.</p>
+      </div>
+
+      <div class="card" onclick="openCard('dashboardforvictims.html')">
+        <h3>Victims</h3>
+        <p>Access victim profiles and their connection to reported crimes.</p>
+      </div>
+    </div>
+    </div>
+    <script>
+      function openCard(link) {
+        window.location.href = link;
+      }
+    </script>
+    </body>
+
+
+
+
+
+

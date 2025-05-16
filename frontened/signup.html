@@ -117,22 +117,34 @@
           return false;
         }
         localStorage.setItem("username", username);
+        localStorage.setItem("email", email);
         window.location.href = "index2.html";
         return false;
       }
 
      
-      function handleCredentialResponse(response) {
+//       function handleCredentialResponse(response) {
+//   console.log("Encoded JWT ID token: " + response.credential);
+
+//   // Fake a username for now — you can parse the JWT for real info
+//   const decoded = parseJwt(response.credential);
+//   const username = decoded.name || "GoogleUser";
+//   localStorage.setItem("username", username);
+//    localStorage.setItem("email", email)
+//   window.location.href = "index2.html";
+// }
+function handleCredentialResponse(response) {
   console.log("Encoded JWT ID token: " + response.credential);
 
-  // Fake a username for now — you can parse the JWT for real info
   const decoded = parseJwt(response.credential);
   const username = decoded.name || "GoogleUser";
+  const email = decoded.email; // get email from JWT
+
   localStorage.setItem("username", username);
+  localStorage.setItem("email", email); // <-- this line ensures email is saved
 
   window.location.href = "index2.html";
 }
-
 // Helper to decode the JWT
 function parseJwt(token) {
   const base64Url = token.split('.')[1];
