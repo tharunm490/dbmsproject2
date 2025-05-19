@@ -415,11 +415,11 @@
         <div id="relatedCrimes"></div>
       </div>
     </div>
-    <div id="chatbot">
+    <!-- <div id="chatbot">
       <input type="text" id="userInput" placeholder="Ask a question..." />
       <button onclick="sendMessage()">Send</button>
       <div id="chatLog"></div>
-    </div>
+    </div> -->
     <br /><br />
     <div class="fter">
       <img class="b2img" src="wave2.png" alt="Background Image" />
@@ -759,33 +759,33 @@
           alert("Failed to delete complaint: " + msg);
         }
       }
-      async function sendMessage() {
-        const input = document.getElementById("userInput");
-        const message = input.value.trim();
-        if (!message) return;
+      // async function sendMessage() {
+      //   const input = document.getElementById("userInput");
+      //   const message = input.value.trim();
+      //   if (!message) return;
 
-        try {
-          const res = await fetch("http://localhost:3000/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message }),
-          });
+      //   try {
+      //     const res = await fetch("http://localhost:3000/api/chat", {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ message }),
+      //     });
 
-          if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      //     if (!res.ok) throw new Error(`Server error: ${res.status}`);
 
-          const data = await res.json();
-          document.getElementById(
-            "chatLog"
-          ).innerText += `You: ${message}\nBot: ${data.answer}\n\n`;
-        } catch (err) {
-          console.error(err);
-          document.getElementById(
-            "chatLog"
-          ).innerText += `Bot: Error contacting server. Try again later.\n\n`;
-        }
+      //     const data = await res.json();
+      //     document.getElementById(
+      //       "chatLog"
+      //     ).innerText += `You: ${message}\nBot: ${data.answer}\n\n`;
+      //   } catch (err) {
+      //     console.error(err);
+      //     document.getElementById(
+      //       "chatLog"
+      //     ).innerText += `Bot: Error contacting server. Try again later.\n\n`;
+      //   }
 
-        input.value = "";
-      }
+      //   input.value = "";
+      // }
     </script>
   </body>
 </html>
