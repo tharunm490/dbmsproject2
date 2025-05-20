@@ -660,35 +660,85 @@
       //     alert("Error submitting complaint.");
       //   }
       // }
+
+      // async function submitComplaint() {
+      //   const category = document.getElementById("category").value;
+      //   const complaintText = document
+      //     .getElementById("complaintText")
+      //     .value.trim();
+      //   const username = localStorage.getItem("username");
+      //   const email = localStorage.getItem("email"); //
+
+      //   if (!complaintText) {
+      //     alert("Please write a complaint.");
+      //     return;
+      //   }
+
+      //   const response = await fetch(
+      //     "http://localhost:3000/api/submitComplaint",
+      //     {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ category, complaintText, username, email }), // ✅ Include email
+      //     }
+      //   );
+
+      //   if (response.ok) {
+      //     alert("Complaint submitted successfully. Confirmation email sent.");
+      //     document.getElementById("complaintText").value = "";
+      //     viewRelatedCrimes(); // Refresh the view
+      //   } else {
+      //     alert("Error submitting complaint.");
+      //   }
+      // }
       async function submitComplaint() {
         const category = document.getElementById("category").value;
         const complaintText = document
           .getElementById("complaintText")
           .value.trim();
         const username = localStorage.getItem("username");
-        const email = localStorage.getItem("email"); //
+        const email = localStorage.getItem("email");
 
         if (!complaintText) {
           alert("Please write a complaint.");
           return;
         }
 
-        const response = await fetch(
-          "http://localhost:3000/api/submitComplaint",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ category, complaintText, username, email }), // ✅ Include email
+        navigator.geolocation.getCurrentPosition(
+          async function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const location = `${latitude}, ${longitude}`;
+
+            const response = await fetch(
+              "http://localhost:3000/api/submitComplaint",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  category,
+                  complaintText,
+                  username,
+                  email,
+                  location,
+                }),
+              }
+            );
+
+            if (response.ok) {
+              alert(
+                "Complaint submitted successfully. Confirmation email sent."
+              );
+              document.getElementById("complaintText").value = "";
+              viewRelatedCrimes(); // Refresh the view
+            } else {
+              alert("Error submitting complaint.");
+            }
+          },
+          function (error) {
+            alert("Location access denied. Cannot submit complaint.");
           }
         );
-
-        if (response.ok) {
-          alert("Complaint submitted successfully. Confirmation email sent.");
-          document.getElementById("complaintText").value = "";
-          viewRelatedCrimes(); // Refresh the view
-        } else {
-          alert("Error submitting complaint.");
-        }
       }
 
       async function viewRelatedCrimes() {
