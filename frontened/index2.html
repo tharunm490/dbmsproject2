@@ -331,6 +331,41 @@
         width: 600px;
         height: auto;
       }
+
+      /* Remove old floating chatbot styles and add Dialogflow Messenger custom styles */
+      df-messenger {
+        --df-messenger-bot-message: #f6f2fa;
+        --df-messenger-button-titlebar-color: #441752;
+        --df-messenger-chat-background-color: #fff;
+        --df-messenger-font-color: #441752;
+        --df-messenger-input-box-color: #f6f2fa;
+        --df-messenger-input-font-color: #441752;
+        --df-messenger-send-icon: #8174a0;
+        --df-messenger-user-message: #8174a0;
+        --df-messenger-titlebar-background: linear-gradient(
+          90deg,
+          #441752 60%,
+          #8174a0 100%
+        );
+        --df-messenger-titlebar-font-color: #fff;
+        --df-messenger-minimized-chat-close-icon-color: #fff;
+        --df-messenger-chat-border-radius: 16px;
+        --df-messenger-titlebar-border-radius: 16px 16px 0 0;
+        --df-messenger-titlebar-padding: 10px 16px;
+        --df-messenger-titlebar-font-size: 18px;
+        --df-messenger-titlebar-font-weight: bold;
+        --df-messenger-titlebar-shadow: 0 6px 24px rgba(68, 23, 82, 0.15);
+      }
+      df-messenger {
+        position: fixed !important;
+        bottom: 30px !important;
+        right: 30px !important;
+        z-index: 9999 !important;
+      }
+      /* Optional: Hide the default Dialogflow icon if you want a cleaner look */
+      /* .df-messenger-icon {
+        display: none !important;
+      } */
     </style>
   </head>
   <body>
@@ -458,6 +493,7 @@
         <div id="relatedCrimes"></div>
       </div>
     </div>
+<<<<<<< HEAD
     <style>
       /* Enhance complaint box and delete button */
       #relatedCrimes .complaint-box {
@@ -512,12 +548,13 @@
         }
       }
     </style>
+=======
+>>>>>>> 3f4268986d21e4467ce814f348ceaf228cd4750c
     <br /><br />
     <div class="fter">
       <img class="b2img" src="wave2.png" alt="Background Image" />
       <footer class="footer">
         <div class="footer-container">
-          <!-- System Info -->
           <div class="footer-section">
             <h2 class="footer-title">🚨 Crime Record System</h2>
             <p>
@@ -526,7 +563,6 @@
             </p>
           </div>
 
-          <!-- Quick Links -->
           <div class="footer-section">
             <h3 class="footer-title">
               <i class="fas fa-link"></i> Quick Links
@@ -549,7 +585,6 @@
             </ul>
           </div>
 
-          <!-- Contact Info -->
           <div class="footer-section">
             <h3 class="footer-title"><i class="fas fa-phone"></i> Contact</h3>
             <ul>
@@ -565,7 +600,6 @@
             </ul>
           </div>
 
-          <!-- Legal -->
           <div class="footer-section">
             <h3 class="footer-title"><i class="fas fa-gavel"></i> Legal</h3>
             <ul>
@@ -593,6 +627,7 @@
         </div>
       </footer>
     </div>
+
     <script>
       function openCard(link) {
         window.location.href = link;
@@ -771,10 +806,40 @@
             }
           },
           function (error) {
-            alert("Location access denied. Cannot submit complaint.");
+            // If location is denied, still submit the complaint without location
+            console.warn("Location access denied. Submitting complaint without location.");
+            submitComplaintWithoutLocation(category, complaintText, username, email);
           }
         );
       }
+
+      async function submitComplaintWithoutLocation(category, complaintText, username, email) {
+            const response = await fetch(
+              "http://localhost:3000/api/submitComplaint",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  category,
+                  complaintText,
+                  username,
+                  email,
+                  location: 'Not Provided', // Indicate location was not provided
+                }),
+              }
+            );
+
+            if (response.ok) {
+              alert(
+                "Complaint submitted successfully (location not provided). Confirmation email sent."
+              );
+              document.getElementById("complaintText").value = "";
+              viewRelatedCrimes(); // Refresh the view
+            } else {
+              alert("Error submitting complaint.");
+            }
+      }
+
 
       async function viewRelatedCrimes() {
         const category = document.getElementById("viewCategory").value;
@@ -807,9 +872,9 @@
           div.className = "complaint-box";
           div.innerHTML = `
       <strong>User:</strong> ${c.username}<br>
-      <strong>Date:</strong> ${c.date_submitted}<br>
-      <strong>Complaint:</strong><br>
+      <strong>Date:</strong> ${new Date(c.date_submitted).toLocaleString()}<br> <strong>Complaint:</strong><br>
       <p>${c.complaint_text}</p>
+      ${c.location && c.location !== 'Not Provided' ? `<strong>Location:</strong> <a href="https://www.google.com/maps?q=${c.location}" target="_blank">View on Map</a><br>` : ''}
        <button class="delete-btn" onclick="deleteComplaint(${c.id})">Delete</button>
     `;
           container.appendChild(div);
@@ -845,5 +910,12 @@
         }
       }
     </script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="CrimeBot"
+      agent-id="c1e14be8-88ca-4a70-94cb-174fef556507"
+      language-code="en"
+    ></df-messenger>
   </body>
 </html>
