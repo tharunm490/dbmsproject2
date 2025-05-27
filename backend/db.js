@@ -1,4 +1,4 @@
-// filepath: c:\Users\Raksha\OneDrive\Desktop\dbms\backend\db.js
+
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({

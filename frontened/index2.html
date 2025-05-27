@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Crime Record Managing System</title>
+    <title>Crime Record </section>Managing System</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Crime Records Management System</title>
     <link
@@ -371,7 +371,7 @@
 
     <br />
     <div class="gbox">
-      <div class="graph">
+      <div class="graph enhanced-graph">
         <h2>Crimes by Type</h2>
         <canvas id="crimeChart" width="600" height="400"></canvas>
       </div>
@@ -386,26 +386,69 @@
       <p id="welcome-user"></p>
       <button id="logout-btn" style="display: none">Logout</button>
     </div>
-    <div class="userscomplaint">
-      <div id="complaint-section" class="complaint-card" style="display: none">
-        <h2>Submit a Complaint</h2>
-        <select id="category">
+    <div class="userscomplaint" style="gap: 40px; margin-top: 40px">
+      <!-- Submit Complaint Card -->
+      <div
+        id="complaint-section"
+        class="complaint-card"
+        style="
+          display: none;
+          box-shadow: 0 8px 32px rgba(68, 23, 82, 0.18);
+          border: 3px solid #8174a0;
+        "
+      >
+        <h2 style="margin-bottom: 24px; font-size: 1.7em; color: #441752">
+          <i class="fas fa-edit" style="color: #8174a0; margin-right: 8px"></i>
+          Submit a Complaint
+        </h2>
+        <label for="category" style="font-weight: 600; color: #441752"
+          >Category</label
+        >
+        <select id="category" style="margin-bottom: 18px">
           <option value="Women/Children Related Crime">
             Women/Children Related Crime
           </option>
           <option value="Financial Fraud">Financial Fraud</option>
           <option value="Cyber Crime">Cyber Crime</option>
         </select>
+        <label for="complaintText" style="font-weight: 600; color: #441752"
+          >Complaint</label
+        >
         <textarea
           id="complaintText"
-          placeholder="Write your complaint..."
+          placeholder="Describe your complaint in detail..."
+          style="margin-bottom: 18px; min-height: 110px"
         ></textarea>
-        <button onclick="submitComplaint()">Submit</button>
+        <button
+          onclick="submitComplaint()"
+          style="margin-top: 10px; font-size: 1.1em"
+        >
+          <i class="fas fa-paper-plane"></i> Submit
+        </button>
       </div>
 
-      <div id="view-section" class="complaint-card" style="display: none">
-        <h2>View Related Complaints</h2>
-        <select id="viewCategory" onchange="viewRelatedCrimes()">
+      <!-- View Complaints Card -->
+      <div
+        id="view-section"
+        class="complaint-card"
+        style="
+          display: none;
+          box-shadow: 0 8px 32px rgba(68, 23, 82, 0.18);
+          border: 3px solid #8174a0;
+        "
+      >
+        <h2 style="margin-bottom: 24px; font-size: 1.7em; color: #441752">
+          <i class="fas fa-eye" style="color: #8174a0; margin-right: 8px"></i>
+          Your Complaints
+        </h2>
+        <label for="viewCategory" style="font-weight: 600; color: #441752"
+          >Filter by Category</label
+        >
+        <select
+          id="viewCategory"
+          onchange="viewRelatedCrimes()"
+          style="margin-bottom: 18px"
+        >
           <option value="Women/Children Related Crime">
             Women/Children Related Crime
           </option>
@@ -415,11 +458,60 @@
         <div id="relatedCrimes"></div>
       </div>
     </div>
-    <!-- <div id="chatbot">
-      <input type="text" id="userInput" placeholder="Ask a question..." />
-      <button onclick="sendMessage()">Send</button>
-      <div id="chatLog"></div>
-    </div> -->
+    <style>
+      /* Enhance complaint box and delete button */
+      #relatedCrimes .complaint-box {
+        background: linear-gradient(90deg, #f6f2fa 80%, #e9e1f3 100%);
+        border-left: 6px solid #8174a0;
+        border-radius: 10px;
+        padding: 16px 20px 12px 20px;
+        margin-bottom: 18px;
+        box-shadow: 0 2px 10px rgba(68, 23, 82, 0.08);
+        color: #441752;
+        font-size: 1.05em;
+        position: relative;
+        transition: box-shadow 0.2s;
+      }
+      #relatedCrimes .complaint-box:hover {
+        box-shadow: 0 4px 18px rgba(68, 23, 82, 0.16);
+        background: linear-gradient(90deg, #f6f2fa 60%, #d8cbe6 100%);
+      }
+      #relatedCrimes .complaint-box strong {
+        color: #8174a0;
+      }
+      #relatedCrimes .delete-btn {
+        background: linear-gradient(90deg, #ff4b6e 60%, #ffb6c1 100%);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 7px 18px;
+        font-size: 0.98em;
+        font-weight: bold;
+        cursor: pointer;
+        position: absolute;
+        right: 18px;
+        bottom: 14px;
+        box-shadow: 0 2px 8px rgba(255, 75, 110, 0.1);
+        transition: background 0.2s, box-shadow 0.2s;
+      }
+      #relatedCrimes .delete-btn:hover {
+        background: linear-gradient(90deg, #ffb6c1 0%, #ff4b6e 100%);
+        box-shadow: 0 4px 16px rgba(255, 75, 110, 0.18);
+      }
+      /* Responsive for cards */
+      @media (max-width: 1100px) {
+        .userscomplaint {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 30px;
+        }
+        #complaint-section,
+        #view-section {
+          max-width: 98vw;
+          width: 98vw;
+        }
+      }
+    </style>
     <br /><br />
     <div class="fter">
       <img class="b2img" src="wave2.png" alt="Background Image" />
@@ -461,7 +553,10 @@
           <div class="footer-section">
             <h3 class="footer-title"><i class="fas fa-phone"></i> Contact</h3>
             <ul>
-              <li><i class="fas fa-envelope"></i> support@crms.gov</li>
+              <li>
+                <i class="fas fa-envelope"></i>
+                crimerecordsmanagingsystem@gmail.com
+              </li>
               <li><i class="fas fa-phone-alt"></i> +1 (800) 123-4567</li>
               <li>
                 <i class="fas fa-map-marker-alt"></i> 123 Justice Ave, Capital
@@ -631,66 +726,6 @@
           });
       };
 
-      // async function submitComplaint() {
-      //   const category = document.getElementById("category").value;
-      //   const complaintText = document
-      //     .getElementById("complaintText")
-      //     .value.trim();
-      //   const username = localStorage.getItem("username");
-      //   // const email = localStorage.getItem("email");
-      //   if (!complaintText) {
-      //     alert("Please write a complaint.");
-      //     return;
-      //   }
-
-      //   const response = await fetch(
-      //     "http://localhost:3000/api/submitComplaint",
-      //     {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({ category, complaintText, username }),
-      //     }
-      //   );
-
-      //   if (response.ok) {
-      //     alert("Complaint submitted successfully.");
-      //     document.getElementById("complaintText").value = "";
-      //     viewRelatedCrimes(); // Refresh the view
-      //   } else {
-      //     alert("Error submitting complaint.");
-      //   }
-      // }
-
-      // async function submitComplaint() {
-      //   const category = document.getElementById("category").value;
-      //   const complaintText = document
-      //     .getElementById("complaintText")
-      //     .value.trim();
-      //   const username = localStorage.getItem("username");
-      //   const email = localStorage.getItem("email"); //
-
-      //   if (!complaintText) {
-      //     alert("Please write a complaint.");
-      //     return;
-      //   }
-
-      //   const response = await fetch(
-      //     "http://localhost:3000/api/submitComplaint",
-      //     {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({ category, complaintText, username, email }), // ✅ Include email
-      //     }
-      //   );
-
-      //   if (response.ok) {
-      //     alert("Complaint submitted successfully. Confirmation email sent.");
-      //     document.getElementById("complaintText").value = "";
-      //     viewRelatedCrimes(); // Refresh the view
-      //   } else {
-      //     alert("Error submitting complaint.");
-      //   }
-      // }
       async function submitComplaint() {
         const category = document.getElementById("category").value;
         const complaintText = document
@@ -809,33 +844,6 @@
           alert("Failed to delete complaint: " + msg);
         }
       }
-      // async function sendMessage() {
-      //   const input = document.getElementById("userInput");
-      //   const message = input.value.trim();
-      //   if (!message) return;
-
-      //   try {
-      //     const res = await fetch("http://localhost:3000/api/chat", {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({ message }),
-      //     });
-
-      //     if (!res.ok) throw new Error(`Server error: ${res.status}`);
-
-      //     const data = await res.json();
-      //     document.getElementById(
-      //       "chatLog"
-      //     ).innerText += `You: ${message}\nBot: ${data.answer}\n\n`;
-      //   } catch (err) {
-      //     console.error(err);
-      //     document.getElementById(
-      //       "chatLog"
-      //     ).innerText += `Bot: Error contacting server. Try again later.\n\n`;
-      //   }
-
-      //   input.value = "";
-      // }
     </script>
   </body>
 </html>
