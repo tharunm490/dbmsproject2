@@ -332,57 +332,40 @@
         height: auto;
       }
 
-      /* Floating Chatbot Styles -- ADDED FROM index2.html */
-      #chatbot-float {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        z-index: 9999;
+      /* Remove old floating chatbot styles and add Dialogflow Messenger custom styles */
+      df-messenger {
+        --df-messenger-bot-message: #f6f2fa;
+        --df-messenger-button-titlebar-color: #441752;
+        --df-messenger-chat-background-color: #fff;
+        --df-messenger-font-color: #441752;
+        --df-messenger-input-box-color: #f6f2fa;
+        --df-messenger-input-font-color: #441752;
+        --df-messenger-send-icon: #8174a0;
+        --df-messenger-user-message: #8174a0;
+        --df-messenger-titlebar-background: linear-gradient(
+          90deg,
+          #441752 60%,
+          #8174a0 100%
+        );
+        --df-messenger-titlebar-font-color: #fff;
+        --df-messenger-minimized-chat-close-icon-color: #fff;
+        --df-messenger-chat-border-radius: 16px;
+        --df-messenger-titlebar-border-radius: 16px 16px 0 0;
+        --df-messenger-titlebar-padding: 10px 16px;
+        --df-messenger-titlebar-font-size: 18px;
+        --df-messenger-titlebar-font-weight: bold;
+        --df-messenger-titlebar-shadow: 0 6px 24px rgba(68, 23, 82, 0.15);
       }
-      #chatbot-icon {
-        background: #441752;
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(68, 23, 82, 0.2);
-        padding: 8px;
-        cursor: pointer;
-        transition: box-shadow 0.2s;
+      df-messenger {
+        position: fixed !important;
+        bottom: 30px !important;
+        right: 30px !important;
+        z-index: 9999 !important;
       }
-      #chatbot-icon:hover {
-        box-shadow: 0 4px 16px rgba(68, 23, 82, 0.3);
-      }
-      #chatbot-window {
-        margin-bottom: 10px;
-        width: 350px;
-        height: 480px;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 6px 24px rgba(68, 23, 82, 0.15);
-        overflow: hidden;
-        position: relative;
-        animation: chatbot-pop 0.2s;
-      }
-      #chatbot-header {
-        background: #441752;
-        color: #fff;
-        padding: 10px 16px;
-        font-weight: bold;
-        font-size: 16px;
-        border-bottom: 1px solid #8174a0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      @keyframes chatbot-pop {
-        from {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        to {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-      /* End of Floating Chatbot Styles */
+      /* Optional: Hide the default Dialogflow icon if you want a cleaner look */
+      /* .df-messenger-icon {
+        display: none !important;
+      } */
     </style>
   </head>
   <body>
@@ -542,32 +525,6 @@
       </footer>
     </div>
 
-    <div id="chatbot-float">
-      <div id="chatbot-icon" onclick="toggleChatbot()">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png"
-          alt="Chatbot"
-          style="width:48px;height:48px;"
-        />
-      </div>
-      <div id="chatbot-window" style="display:none;">
-        <div id="chatbot-header">
-          <span>Chatbot</span>
-          <button
-            onclick="toggleChatbot()"
-            style="float:right;background:none;border:none;font-size:18px;cursor:pointer;"
-          >
-            &times;
-          </button>
-        </div>
-        <iframe
-          height="430"
-          width="350"
-          src="https://bot.dialogflow.com/c1e14be8-88ca-4a70-94cb-174fef556507"
-          style="border:none;width:100%;"
-        ></iframe>
-      </div>
-    </div>
     <script>
       function openCard(link) {
         window.location.href = link;
@@ -849,21 +806,13 @@
           alert("Failed to delete complaint: " + msg);
         }
       }
-
-      /* Floating Chatbot Script -- ADDED FROM index2.html */
-      function toggleChatbot() {
-        const win = document.getElementById("chatbot-window");
-        const icon = document.getElementById("chatbot-icon");
-        if (win.style.display === "none" || win.style.display === "") {
-          win.style.display = "block";
-          icon.style.display = "none"; // Hide icon when chat window is open
-        } else {
-          win.style.display = "none";
-          icon.style.display = "block"; // Show icon when chat window is closed
-        }
-      }
-      // Note: The sendMessage() function from index2.html was related to a different,
-      // non-iframe chatbot and is not needed for the Dialogflow iframe chatbot.
     </script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="CrimeBot"
+      agent-id="c1e14be8-88ca-4a70-94cb-174fef556507"
+      language-code="en"
+    ></df-messenger>
   </body>
 </html>
