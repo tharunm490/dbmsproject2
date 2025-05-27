@@ -28,5 +28,32 @@ Crime Records Management System`
 
   return transporter.sendMail(mailOptions);
 }
+function notifyAdmins(username, userEmail, complaintText, category, location) {
+  const adminEmails = ['tharunmbtech24@rvu.edu.in'];
 
-module.exports = { sendComplaintConfirmation };
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: adminEmails.join(','),
+    subject: 'New Crime Complaint Submitted',
+    text: `A new complaint has been submitted:=
+
+Username: ${username}
+Email: ${userEmail}
+Category: ${category}
+Location: ${location}
+Complaint:
+${complaintText}
+
+Please help them they need your help.`
+  };
+
+  return transporter.sendMail(mailOptions);
+}
+
+module.exports = {
+  sendComplaintConfirmation,
+  notifyAdmins
+};
+
+
+// module.exports = { sendComplaintConfirmation };
