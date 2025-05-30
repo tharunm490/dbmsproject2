@@ -21,8 +21,7 @@ router.post('/add', (req, res) => {
     station_id,
     assigned_officer_id,
     criminal_name,
-    major_crime,
-    minor_crime,
+    crime_name,
   } = req.body;
 
   if (
@@ -31,22 +30,20 @@ router.post('/add', (req, res) => {
     !station_id ||
     !assigned_officer_id ||
     !criminal_name ||
-    !major_crime ||
-    !minor_crime
+    !crime_name
   ) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   db.query(
-    'INSERT INTO Crimes (description, date_reported, station_id, assigned_officer_id, criminal_name, major_crime, minor_crime) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO Crimes (description, date_reported, station_id, assigned_officer_id, criminal_name, crime_name) VALUES (?, ?, ?, ?, ?, ?)',
     [
       description,
       date_reported,
       station_id,
       assigned_officer_id,
       criminal_name,
-      major_crime,
-      minor_crime,
+      crime_name,
     ],
     (err, result) => {
       if (err) {
@@ -69,8 +66,7 @@ router.put('/update/:id', (req, res) => {
     station_id,
     assigned_officer_id,
     criminal_name,
-    major_crime,
-    minor_crime,
+    crime_name,
   } = req.body;
 
   if (
@@ -79,22 +75,20 @@ router.put('/update/:id', (req, res) => {
     !station_id ||
     !assigned_officer_id ||
     !criminal_name ||
-    !major_crime ||
-    !minor_crime
+    !crime_name
   ) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   db.query(
-    'UPDATE Crimes SET description = ?, date_reported = ?, station_id = ?, assigned_officer_id = ?, criminal_name = ?, major_crime = ?, minor_crime = ? WHERE crime_id = ?',
+    'UPDATE Crimes SET description = ?, date_reported = ?, station_id = ?, assigned_officer_id = ?, criminal_name = ?, crime_name = ? WHERE crime_id = ?',
     [
       description,
       date_reported,
       station_id,
       assigned_officer_id,
       criminal_name,
-      major_crime,
-      minor_crime,
+      crime_name,
       id,
     ],
     (err, result) => {

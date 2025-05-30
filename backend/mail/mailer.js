@@ -1,4 +1,6 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: './.env' });
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Loaded' : 'Missing');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -30,7 +32,7 @@ Crime Records Management System`
 }
 function notifyAdmins(username, userEmail, complaintText, category, location) {
   const adminEmails = ['tharunmbtech24@rvu.edu.in'];
-
+ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: adminEmails.join(','),
@@ -41,6 +43,7 @@ Username: ${username}
 Email: ${userEmail}
 Category: ${category}
 Location: ${location}
+View on Map: ${mapsUrl}
 Complaint:
 ${complaintText}
 

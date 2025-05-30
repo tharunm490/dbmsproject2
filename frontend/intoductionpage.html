@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - Crime Records Management System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(to bottom, #441752, #231e2d);
+        color: #fff;
+      }
+      header {
+        text-align: center;
+        padding: 50px 20px 20px;
+      }
+      header h1 {
+        font-size: 3rem;
+        color: #ffffff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
+      .about {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+      .about h2 {
+        color: #ffb3ff;
+        margin-bottom: 20px;
+      }
+      .about p {
+        line-height: 1.7;
+        font-size: 1.1rem;
+        color: #f5f5f5;
+      }
+      .section {
+        margin-top: 50px;
+      }
+      .services,
+      .advantages {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 20px;
+      }
+      .card {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 12px;
+        transition: 0.3s;
+        border-left: 5px solid #ff33cc;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+      }
+      .card h3 {
+        color: #ffffff;
+        margin-bottom: 10px;
+      }
+      .card p {
+        color: #eaeaea;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9rem;
+        background-color: rgba(0, 0, 0, 0.2);
+        margin-top: 60px;
+      }
+      @media screen and (max-width: 600px) {
+        header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Crime Records Management System</h1>
+      <p style="font-size: 1.2rem; color: #ddd">
+        A Secure and Intelligent Crime Data Handling Platform
+      </p>
+    </header>
+
+    <div class="about">
+      <section class="section">
+        <h2>About the System</h2>
+        <p>
+          Our Crime Records Management System (CRMS) is a powerful digital
+          platform designed to help police departments and law enforcement
+          agencies manage crime-related data efficiently. It centralizes
+          information related to criminal cases, suspects, victims, evidence,
+          and case progress in a secure and structured manner. Built using
+          modern technologies like Node.js, Express, MySQL, and styled with
+          creative UI/UX principles, the system ensures ease of use,
+          scalability, and security.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Key Advantages</h2>
+        <div class="advantages">
+          <div class="card">
+            <h3>🔐 Centralized Data Management</h3>
+            <p>
+              All crime data from different departments is stored and managed in
+              one place, making access fast and seamless.
+            </p>
+          </div>
+          <div class="card">
+            <h3>⚡ Fast Case Tracking</h3>
+            <p>
+              Track case progress, view suspects, evidence, and court updates in
+              real-time using interactive dashboards.
+            </p>
+          </div>
+          <div class="card">
+            <h3>📊 Secure & Scalable</h3>
+            <p>
+              Built on a robust architecture with authentication, it can be
+              easily scaled for cities or states.
+            </p>
+          </div>
+          <div class="card">
+            <h3>📧 Email Alerts</h3>
+            <p>
+              Automatic email notifications after the user complaints and also
+              the email will be recieve to the admin peoples for helping the
+              users.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Services We Provide</h2>
+        <div class="services">
+          <div class="card">
+            <h3>🚓 Crime Registration</h3>
+            <p>
+              Easy online form to register crimes with category, description,
+              suspect details and station assignment.
+            </p>
+          </div>
+          <div class="card">
+            <h3>👮 Officer Assignment</h3>
+            <p>
+              Assign officers to specific cases and monitor their progress and
+              reports through a controlled backend.
+            </p>
+          </div>
+          <div class="card">
+            <h3>📝 Evidence Management</h3>
+            <p>
+              Record and track physical or digital evidence linked with any case
+              in a secure format.
+            </p>
+          </div>
+          <div class="card">
+            <h3>🧾 Court Case Monitoring</h3>
+            <p>
+              Track court hearing status, decisions, and update progress related
+              to cases directly in the portal.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>
+        &copy; 2025 Crime Records Management System | Contact:
+        <a
+          href="mailto:crimerecordsmanagingsystem@gmail.com"
+          style="color: #ffb3ff"
+          >crimerecordsmanagingsystem@gmail.com</a
+        >
+      </p>
+    </footer>
+  </body>
+</html>

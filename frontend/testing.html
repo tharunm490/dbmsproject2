@@ -9,7 +9,6 @@
         background-color: #f4f4f9;
         color: #333;
       }
-
       h1 {
         text-align: center;
         background-color: #4caf50;
@@ -17,7 +16,6 @@
         padding: 20px 0;
         margin: 0;
       }
-
       .form-container {
         background-color: #ffffff;
         margin: 20px auto;
@@ -26,17 +24,14 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 600px;
       }
-
       .form-container h3 {
         margin-bottom: 15px;
         color: #4caf50;
       }
-
       form {
         display: flex;
         flex-direction: column;
       }
-
       form input,
       form select,
       form button {
@@ -46,7 +41,6 @@
         border-radius: 4px;
         font-size: 16px;
       }
-
       form button {
         background-color: #4caf50;
         color: white;
@@ -54,18 +48,15 @@
         cursor: pointer;
         transition: background-color 0.3s;
       }
-
       form button:hover {
         background-color: #45a049;
       }
-
       .cards {
         display: flex;
         justify-content: center;
         gap: 20px;
         margin: 20px;
       }
-
       .cards .card {
         background-color: #ffffff;
         padding: 20px;
@@ -74,7 +65,6 @@
         text-align: center;
         flex: 1;
       }
-
       table {
         width: 90%;
         margin: 20px auto;
@@ -84,23 +74,19 @@
         border-radius: 8px;
         overflow: hidden;
       }
-
       table th,
       table td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
       }
-
       table th {
         background-color: #4caf50;
         color: white;
       }
-
       table tr:hover {
         background-color: #f1f1f1;
       }
-
       table button {
         padding: 5px 10px;
         border: none;
@@ -108,21 +94,17 @@
         cursor: pointer;
         font-size: 14px;
       }
-
       table button:first-child {
         background-color: #f44336;
         color: white;
       }
-
       table button:first-child:hover {
         background-color: #d32f2f;
       }
-
       table button:last-child {
         background-color: #2196f3;
         color: white;
       }
-
       table button:last-child:hover {
         background-color: #1976d2;
       }
@@ -149,8 +131,7 @@
           placeholder="Criminal Name"
           required
         />
-        <input type="text" id="majorCrime" placeholder="Major Crime" />
-        <input type="text" id="minorCrime" placeholder="Minor Crime" />
+        <input type="text" id="crimeName" placeholder="Crime Name" required />
         <button type="submit">Add Crime</button>
       </form>
     </div>
@@ -161,12 +142,8 @@
         <p id="totalCrimes">0</p>
       </div>
       <div class="card">
-        <h3>Major Crimes</h3>
-        <p id="majorCrimes">0</p>
-      </div>
-      <div class="card">
-        <h3>Minor Crimes</h3>
-        <p id="minorCrimes">0</p>
+        <h3>Crime Types</h3>
+        <p id="crimeTypes">0</p>
       </div>
     </div>
 
@@ -179,8 +156,7 @@
           <th>Station ID</th>
           <th>Officer ID</th>
           <th>Criminal Name</th>
-          <th>Major Crime</th>
-          <th>Minor Crime</th>
+          <th>Crime Name</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -197,28 +173,28 @@
 
           const tableBody = document.getElementById("crimeTableBody");
           const totalCrimes = document.getElementById("totalCrimes");
-          const majorCrimes = document.getElementById("majorCrimes");
-          const minorCrimes = document.getElementById("minorCrimes");
+          const crimeTypes = document.getElementById("crimeTypes");
 
           // Reset
           tableBody.innerHTML = "";
-          let major = 0,
-            minor = 0;
+
+          // Count unique crime types
+          const crimeTypeSet = new Set();
 
           data.forEach((crime) => {
-            if (crime.major_crime.toLowerCase() !== "none") major++;
-            if (crime.minor_crime.toLowerCase() !== "none") minor++;
+            if (crime.crime_name) crimeTypeSet.add(crime.crime_name);
 
             const row = document.createElement("tr");
             row.innerHTML = `
             <td>${crime.crime_id}</td>
             <td>${crime.description}</td>
-            <td>${crime.date_reported.split("T")[0]}</td>
+            <td>${
+              crime.date_reported ? crime.date_reported.split("T")[0] : ""
+            }</td>
             <td>${crime.station_id}</td>
             <td>${crime.assigned_officer_id}</td>
             <td>${crime.criminal_name}</td>
-            <td>${crime.major_crime}</td>
-            <td>${crime.minor_crime}</td>
+            <td>${crime.crime_name}</td>
             <td>
               <button onclick="deleteCrime('${crime.crime_id}')">Delete</button>
               <button onclick="updateCrime('${crime.crime_id}')">Update</button>
@@ -228,8 +204,7 @@
           });
 
           totalCrimes.innerText = data.length;
-          majorCrimes.innerText = major;
-          minorCrimes.innerText = minor;
+          crimeTypes.innerText = crimeTypeSet.size;
         } catch (err) {
           console.error("Failed to fetch crimes:", err);
           alert("Error loading data.");
@@ -244,10 +219,7 @@
         const stationId = document.getElementById("stationId").value;
         const officerId = document.getElementById("officerId").value;
         const criminalName = document.getElementById("criminalName").value;
-        const majorCrime =
-          document.getElementById("majorCrime").value || "None";
-        const minorCrime =
-          document.getElementById("minorCrime").value || "None";
+        const crimeName = document.getElementById("crimeName").value;
 
         const newCrime = {
           description,
@@ -255,8 +227,7 @@
           station_id: stationId,
           assigned_officer_id: officerId,
           criminal_name: criminalName,
-          major_crime: majorCrime,
-          minor_crime: minorCrime,
+          crime_name: crimeName,
         };
 
         try {
@@ -314,15 +285,15 @@
         const stationId = prompt("Enter new station ID:");
         const officerId = prompt("Enter new officer ID:");
         const criminalName = prompt("Enter new criminal name:");
-        const majorCrime = prompt("Enter new major crime (or 'None'):");
-        const minorCrime = prompt("Enter new minor crime (or 'None'):");
+        const crimeName = prompt("Enter new crime name:");
 
         if (
           !description ||
           !dateReported ||
           !stationId ||
           !officerId ||
-          !criminalName
+          !criminalName ||
+          !crimeName
         ) {
           alert("All fields are required!");
           return;
@@ -334,8 +305,7 @@
           station_id: stationId,
           assigned_officer_id: officerId,
           criminal_name: criminalName,
-          major_crime: majorCrime || "None",
-          minor_crime: minorCrime || "None",
+          crime_name: crimeName,
         };
 
         try {

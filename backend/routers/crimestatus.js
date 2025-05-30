@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// Route to get crime stats grouped by major crime
+// Route to get crime stats grouped by crime name
 router.get('/', (req, res) => {
-  const sql = 'SELECT major_crime, COUNT(*) as count FROM Crimes GROUP BY major_crime';
+  const sql = 'SELECT crime_name, COUNT(*) as count FROM Crimes GROUP BY crime_name';
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching crime stats:', err);

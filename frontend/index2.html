@@ -2,8 +2,15 @@
 <html>
   <head>
     <title>Crime Record </section>Managing System</title>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/timezone.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Crime Records Management System</title>
+    <script>
+      dayjs.extend(window.dayjs_plugin_utc);
+      dayjs.extend(window.dayjs_plugin_timezone);
+    </script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
@@ -366,6 +373,14 @@
       /* .df-messenger-icon {
         display: none !important;
       } */
+      .footer-section ul li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .footer-section ul li i {
+        min-width: 22px;
+      }
     </style>
   </head>
   <body>
@@ -396,7 +411,7 @@
           Management System
         </h1>
         <button class="nbtn">
-          <a href="#" onclick="checkPassword1()">Crime</a>
+          <a href="intoductionpage.html">Crime</a>
         </button>
         <button class="nbtn b2"><a href="signup.html">Sign Up</a></button>
       </div>
@@ -445,6 +460,7 @@
           </option>
           <option value="Financial Fraud">Financial Fraud</option>
           <option value="Cyber Crime">Cyber Crime</option>
+          <option value="Domestic Violence">Domestic Violence</option>
         </select>
         <label for="complaintText" style="font-weight: 600; color: #441752"
           >Complaint</label
@@ -489,67 +505,12 @@
           </option>
           <option value="Financial Fraud">Financial Fraud</option>
           <option value="Cyber Crime">Cyber Crime</option>
+          <option value="Domestic Violence">Domestic Violence</option>
         </select>
         <div id="relatedCrimes"></div>
       </div>
     </div>
-<<<<<<< HEAD
-    <style>
-      /* Enhance complaint box and delete button */
-      #relatedCrimes .complaint-box {
-        background: linear-gradient(90deg, #f6f2fa 80%, #e9e1f3 100%);
-        border-left: 6px solid #8174a0;
-        border-radius: 10px;
-        padding: 16px 20px 12px 20px;
-        margin-bottom: 18px;
-        box-shadow: 0 2px 10px rgba(68, 23, 82, 0.08);
-        color: #441752;
-        font-size: 1.05em;
-        position: relative;
-        transition: box-shadow 0.2s;
-      }
-      #relatedCrimes .complaint-box:hover {
-        box-shadow: 0 4px 18px rgba(68, 23, 82, 0.16);
-        background: linear-gradient(90deg, #f6f2fa 60%, #d8cbe6 100%);
-      }
-      #relatedCrimes .complaint-box strong {
-        color: #8174a0;
-      }
-      #relatedCrimes .delete-btn {
-        background: linear-gradient(90deg, #ff4b6e 60%, #ffb6c1 100%);
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        padding: 7px 18px;
-        font-size: 0.98em;
-        font-weight: bold;
-        cursor: pointer;
-        position: absolute;
-        right: 18px;
-        bottom: 14px;
-        box-shadow: 0 2px 8px rgba(255, 75, 110, 0.1);
-        transition: background 0.2s, box-shadow 0.2s;
-      }
-      #relatedCrimes .delete-btn:hover {
-        background: linear-gradient(90deg, #ffb6c1 0%, #ff4b6e 100%);
-        box-shadow: 0 4px 16px rgba(255, 75, 110, 0.18);
-      }
-      /* Responsive for cards */
-      @media (max-width: 1100px) {
-        .userscomplaint {
-          flex-direction: column;
-          align-items: stretch;
-          gap: 30px;
-        }
-        #complaint-section,
-        #view-section {
-          max-width: 98vw;
-          width: 98vw;
-        }
-      }
-    </style>
-=======
->>>>>>> 3f4268986d21e4467ce814f348ceaf228cd4750c
+
     <br /><br />
     <div class="fter">
       <img class="b2img" src="wave2.png" alt="Background Image" />
@@ -558,7 +519,7 @@
           <div class="footer-section">
             <h2 class="footer-title">🚨 Crime Record System</h2>
             <p>
-              Secure platform to manage and track criminal records for law
+              Secure platform to manage and track criminal<br />records for law
               enforcement agencies.
             </p>
           </div>
@@ -590,7 +551,11 @@
             <ul>
               <li>
                 <i class="fas fa-envelope"></i>
-                crimerecordsmanagingsystem@gmail.com
+                <span
+                  style="font-size: large; font-weight: 600; margin-left: 8px"
+                >
+                  crimerecordsmanagingsystem@gmail.com
+                </span>
               </li>
               <li><i class="fas fa-phone-alt"></i> +1 (800) 123-4567</li>
               <li>
@@ -633,6 +598,24 @@
         window.location.href = link;
       }
       function checkAdminPassword() {
+        // List of allowed admin emails (all lowercase, trimmed)
+        const allowedAdmins = [
+          "crimerecordsmanagingsystem@gmail.com",
+          "tharunmbtech24@rvu.edu.in",
+          "friend2@example.com", // Add your other friend's email here
+        ];
+
+        // Get email from localStorage
+        const email = (localStorage.getItem("email") || "")
+          .trim()
+          .toLowerCase();
+
+        if (!allowedAdmins.includes(email)) {
+          alert("Access denied. Not an authorized admin email.");
+          return;
+        }
+
+        // Prompt for password
         const password = prompt("Enter the admin password:");
         if (password === "admin123") {
           window.location.href = "admin.html";
@@ -645,7 +628,7 @@
         const response = await fetch("http://localhost:3000/api/crime-stats");
         const data = await response.json();
 
-        const labels = data.map((item) => item.major_crime);
+        const labels = data.map((item) => item.crime_name);
         const counts = data.map((item) => item.count);
 
         const ctx = document.getElementById("crimeChart").getContext("2d");
@@ -773,12 +756,27 @@
           alert("Please write a complaint.");
           return;
         }
-
+        console.log("Requesting location...");
         navigator.geolocation.getCurrentPosition(
           async function (position) {
+            // const latitude = position.coords.latitude;
+            // const longitude = position.coords.longitude;
+            // const location = `${latitude}, ${longitude}`;
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            const location = `${latitude}, ${longitude}`;
+            let location = `${latitude}, ${longitude}`;
+            console.log("Latitude:", latitude, "Longitude:", longitude);
+            try {
+              const geoRes = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+              );
+              const geoData = await geoRes.json();
+              if (geoData && geoData.display_name) {
+                location = geoData.display_name;
+              }
+            } catch (e) {
+              // fallback to coordinates if geocoding fails
+            }
 
             const response = await fetch(
               "http://localhost:3000/api/submitComplaint",
@@ -807,39 +805,50 @@
           },
           function (error) {
             // If location is denied, still submit the complaint without location
-            console.warn("Location access denied. Submitting complaint without location.");
-            submitComplaintWithoutLocation(category, complaintText, username, email);
+            console.warn(
+              "Location access denied. Submitting complaint without location."
+            );
+            submitComplaintWithoutLocation(
+              category,
+              complaintText,
+              username,
+              email
+            );
           }
         );
       }
 
-      async function submitComplaintWithoutLocation(category, complaintText, username, email) {
-            const response = await fetch(
-              "http://localhost:3000/api/submitComplaint",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  category,
-                  complaintText,
-                  username,
-                  email,
-                  location: 'Not Provided', // Indicate location was not provided
-                }),
-              }
-            );
+      async function submitComplaintWithoutLocation(
+        category,
+        complaintText,
+        username,
+        email
+      ) {
+        const response = await fetch(
+          "http://localhost:3000/api/submitComplaint",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              category,
+              complaintText,
+              username,
+              email,
+              location: "Not Provided", // Indicate location was not provided
+            }),
+          }
+        );
 
-            if (response.ok) {
-              alert(
-                "Complaint submitted successfully (location not provided). Confirmation email sent."
-              );
-              document.getElementById("complaintText").value = "";
-              viewRelatedCrimes(); // Refresh the view
-            } else {
-              alert("Error submitting complaint.");
-            }
+        if (response.ok) {
+          alert(
+            "Complaint submitted successfully (location not provided). Confirmation email sent."
+          );
+          document.getElementById("complaintText").value = "";
+          viewRelatedCrimes(); // Refresh the view
+        } else {
+          alert("Error submitting complaint.");
+        }
       }
-
 
       async function viewRelatedCrimes() {
         const category = document.getElementById("viewCategory").value;
@@ -872,10 +881,18 @@
           div.className = "complaint-box";
           div.innerHTML = `
       <strong>User:</strong> ${c.username}<br>
-      <strong>Date:</strong> ${new Date(c.date_submitted).toLocaleString()}<br> <strong>Complaint:</strong><br>
+      <strong>Date:</strong> ${dayjs(c.date_submitted)
+        .tz("Asia/Kolkata")
+        .format("YYYY-MM-DD HH:mm:ss")}<br>
       <p>${c.complaint_text}</p>
-      ${c.location && c.location !== 'Not Provided' ? `<strong>Location:</strong> <a href="https://www.google.com/maps?q=${c.location}" target="_blank">View on Map</a><br>` : ''}
-       <button class="delete-btn" onclick="deleteComplaint(${c.id})">Delete</button>
+      ${
+        c.location && c.location !== "Not Provided"
+          ? `<strong>Location:</strong> <a href="https://www.google.com/maps?q=${c.location}" target="_blank">View on Map</a><br>`
+          : ""
+      }
+       <button class="delete-btn" onclick="deleteComplaint(${
+         c.id
+       })">Delete</button>
     `;
           container.appendChild(div);
         });
