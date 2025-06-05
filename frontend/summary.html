@@ -140,7 +140,8 @@
             }
 
             document.getElementById("reportArea").innerHTML = `
-                        <h3>Crime #${data.crime_id}</h3>
+                        <h2>Crime #${data.crime_id}</h2>
+                        <h3>Criminal Name :${data.name}</h3>
                         <p><strong>Description:</strong> ${data.crime_description}</p>
                         <p><strong>Date Reported:</strong> ${data.date_reported}</p>
                         <p><strong>Crime:</strong> ${data.crime_name} (${data.category})</p>

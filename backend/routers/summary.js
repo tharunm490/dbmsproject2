@@ -8,6 +8,7 @@ router.get('/crime-summary/:id', (req, res) => {
     const query = `
         SELECT
     c.crime_id,
+    c.criminal_name as name,
     c.description AS crime_description,
     c.date_reported,
     c.crime_name,
