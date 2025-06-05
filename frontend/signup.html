@@ -174,7 +174,7 @@
           'input[name="confirm_password"]'
         ).value;
         let usernameRegex = /^[a-zA-Z]+$/;
-        let emailRegex = /^[a-zA-Z0-9._%+-]+@rvu.edu.in$/i;
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
         let passwordRegex = /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
         if (!usernameRegex.test(username)) {
