@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Crime Summary Report</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Montserrat", Arial, sans-serif;
+        background: linear-gradient(120deg, #f7f5fa 60%, #e3e0ee 100%);
+        color: #441752;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 6px 32px #44175222;
+        padding: 40px 32px 32px 32px;
+      }
+      h1 {
+        color: #441752;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+        text-align: center;
+        font-weight: 700;
+      }
+      label {
+        font-weight: bold;
+        color: #441752;
+        display: block;
+        margin-bottom: 8px;
+      }
+      select,
+      button {
+        margin: 10px 0;
+        padding: 12px 18px;
+        border-radius: 7px;
+        border: 1.5px solid #8174a0;
+        font-size: 1rem;
+        outline: none;
+        background: #f7f5fa;
+        color: #441752;
+        transition: border 0.2s, box-shadow 0.2s;
+        font-family: inherit;
+      }
+      select:focus,
+      button:focus {
+        border: 2px solid #441752;
+        box-shadow: 0 0 0 2px #8174a055;
+      }
+      select:hover {
+        border-color: #441752;
+        background: #ede7f6;
+      }
+      button {
+        background: linear-gradient(90deg, #441752 60%, #8174a0 100%);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 10px;
+        box-shadow: 0 2px 8px #8174a022;
+        transition: background 0.2s, box-shadow 0.2s;
+      }
+      button:hover {
+        background: linear-gradient(90deg, #8174a0 60%, #441752 100%);
+        box-shadow: 0 4px 16px #44175222;
+      }
+      .report {
+        border: 1.5px solid #8174a0;
+        background: #f9f7fc;
+        padding: 28px 28px;
+        border-radius: 14px;
+        margin-top: 32px;
+        box-shadow: 0 2px 16px #8174a022;
+        min-height: 80px;
+        transition: box-shadow 0.2s;
+      }
+      .report h3,
+      .report h4 {
+        color: #441752;
+        margin-top: 18px;
+        margin-bottom: 8px;
+        font-weight: 700;
+      }
+      .report p {
+        margin: 0 0 10px 0;
+        color: #3a2a4d;
+        font-size: 1.02rem;
+      }
+      @media (max-width: 700px) {
+        .container {
+          padding: 18px 6px;
+        }
+      }
+      @media (max-width: 600px) {
+        .container {
+          margin: 10px 4px;
+        }
+        .report {
+          padding: 12px 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Crime Summary Report</h1>
+      <label for="crimeId">Select Crime ID:</label>
+      <select id="crimeId">
+        <option value="">--Select--</option>
+        <script>
+          for (let i = 1; i <= 15; i++) {
+            document.write(`<option value="${i}">${i}</option>`);
+          }
+        </script>
+      </select>
+      <button onclick="fetchReport()">Get Report</button>
+      <div class="report" id="reportArea"></div>
+    </div>
+    <script>
+      function fetchReport() {
+        const crimeId = document.getElementById("crimeId").value;
+        if (!crimeId) return alert("Please select a Crime ID.");
+
+        fetch(`http://localhost:3000/api/crime-summary/${crimeId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.message) {
+              document.getElementById(
+                "reportArea"
+              ).innerHTML = `<p>${data.message}</p>`;
+              return;
+            }
+
+            document.getElementById("reportArea").innerHTML = `
+                        <h3>Crime #${data.crime_id}</h3>
+                        <p><strong>Description:</strong> ${data.crime_description}</p>
+                        <p><strong>Date Reported:</strong> ${data.date_reported}</p>
+                        <p><strong>Crime:</strong> ${data.crime_name} (${data.category})</p>
+
+                        <h4>Station Info</h4>
+                        <p>${data.station_name}, ${data.station_location} <br>Contact: ${data.station_contact}</p>
+
+                        <h4>Assigned Officer</h4>
+                        <p>${data.officer_name} (${data.officer_job})</p>
+
+                        <h4>Suspect</h4>
+                        <p>${data.suspect_name}, Age: ${data.suspect_age}</p>
+
+                        <h4>Victim</h4>
+                        <p>${data.victim_name}, Contact: ${data.victim_contact}</p>
+
+                        <h4>Witness</h4>
+                        <p>${data.witness_name}, Contact: ${data.witness_contact}</p>
+
+                        <h4>Evidence</h4>
+                        <p>${data.evidence_description}</p>
+
+                        <h4>Progress</h4>
+                        <p>${data.status_update} (Updated on ${data.date_updated})</p>
+
+                        <h4>Arrest</h4>
+                        <p>Arrested on ${data.arrest_date}</p>
+
+                        <h4>Court Case</h4>
+                        <p>Status: ${data.case_status}, Decision: ${data.court_decision}</p>
+                    `;
+          })
+          .catch((err) => {
+            document.getElementById(
+              "reportArea"
+            ).innerHTML = `<p>Error fetching data</p>`;
+            console.error(err);
+          });
+      }
+    </script>
+  </body>
+</html>

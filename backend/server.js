@@ -15,6 +15,7 @@ const crimeStatsRoutes = require('./routers/crimestatus'); // Import the crime s
 const courtCaseStatsRoutes = require('./routers/courtstatus');
 const complaintRoutes = require('./routers/complaints');
 // const chatbotRoutes = require('./routers/chatbot'); // Import the chatbot route
+const summaryRoutes = require('./routers/summary');
 const app = express();
 
 // Middleware
@@ -36,6 +37,7 @@ app.use('/api/court_cases', courtCasesRoutes);
 app.use('/api/crime-stats', crimeStatsRoutes); // Use the crime stats route
 app.use('/api/court-case-stats', courtCaseStatsRoutes);
 app.use('/api', complaintRoutes);
+app.use('/api', summaryRoutes);
 // app.use('/api', chatbotRoutes);
 app.use((err, req, res, next) => {
   console.error(err.stack);
