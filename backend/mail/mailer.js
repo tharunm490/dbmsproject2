@@ -31,7 +31,7 @@ Crime Records Management System`
   return transporter.sendMail(mailOptions);
 }
 function notifyAdmins(username, userEmail, complaintText, category, location) {
-  const adminEmails = ['tharunmbtech24@rvu.edu.in'];
+  const adminEmails = ['tharunmbtech24@rvu.edu.in', 'varshashivanandkbtech24@rvu.edu.in', 'vishalshekarbtech24@rvu.edu.in'];
  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
   const mailOptions = {
     from: process.env.EMAIL_USER,
